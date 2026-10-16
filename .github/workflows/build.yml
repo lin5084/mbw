@@ -25,7 +25,10 @@ jobs:
         with:
           name: mbw-bin
           path: mbw-arm64-static
-      - name: create release
+      - name: Release
         uses: softprops/action-gh-release@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          files: mbw-arm64-static
+          files: |
+            mbw-arm64-static
