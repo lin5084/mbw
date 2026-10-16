@@ -1,0 +1,31 @@
+name: Build mbw arm64 static
+on:
+  push:
+    tags:
+      - 'v*'
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: install NDK
+        uses: nttld/setup-ndk@v1
+        with:
+          ndk-version: r25c
+      - name: compile mbw static arm64
+        run: |
+          export NDK=$ANDROID_NDK_HOME
+          export TOOLCHAIN=$NDK/toolchains/llvm/prebuilt/linux-x86_64
+          export TARGET=aarch64-linux-android
+          export API=28
+          export CC=$TOOLCHAIN/bin/$TARGET$API-clang
+          $CC -static mbw.c -o mbw-arm64-static
+      - name: upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: mbw-bin
+          path: mbw-arm64-static
+      - name: create release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: mbw-arm64-static
