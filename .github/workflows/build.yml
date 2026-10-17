@@ -21,7 +21,7 @@ jobs:
           export TARGET=armv7a-linux-androideabi
           export API=28
           export CC=$TOOLCHAIN/bin/$TARGET$API-clang
-          $CC -static mbw.c -o mbw-armv7-static -Wl,-zmax-page-size=4096 -Wl,--tls-align=32
+          $CC -static -fno-emulated-tls mbw.c -o mbw-armv7-static -Wl,-zmax-page-size=4096
       - name: upload artifact
         uses: actions/upload-artifact@v4
         with:
