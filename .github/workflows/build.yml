@@ -1,4 +1,4 @@
-name: Build mbw armv7 static
+name: Build mbw armv7 static r21e
 on:
   push:
     tags:
@@ -10,18 +10,18 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: install NDK
+      - name: install NDK r21e
         uses: nttld/setup-ndk@v1
         with:
-          ndk-version: r25c
-      - name: compile mbw static armv7(32bit) fix TLS align
+          ndk-version: r21e
+      - name: compile mbw static armv7(32bit)
         run: |
           export NDK=$ANDROID_NDK_HOME
           export TOOLCHAIN=$NDK/toolchains/llvm/prebuilt/linux-x86_64
           export TARGET=armv7a-linux-androideabi
           export API=28
           export CC=$TOOLCHAIN/bin/$TARGET$API-clang
-          $CC -static -fno-emulated-tls mbw.c -o mbw-armv7-static -Wl,-zmax-page-size=4096
+          $CC -static -fno-emulated-tls mbw.c -o mbw-armv7-static
       - name: upload artifact
         uses: actions/upload-artifact@v4
         with:
