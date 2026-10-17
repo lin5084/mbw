@@ -1,4 +1,4 @@
-name: Build mbw arm64 static
+name: Build mbw armv7 static
 on:
   push:
     tags:
@@ -14,23 +14,23 @@ jobs:
         uses: nttld/setup-ndk@v1
         with:
           ndk-version: r25c
-      - name: compile mbw static arm64
+      - name: compile mbw static armv7(32bit)
         run: |
           export NDK=$ANDROID_NDK_HOME
           export TOOLCHAIN=$NDK/toolchains/llvm/prebuilt/linux-x86_64
-          export TARGET=aarch64-linux-android
+          export TARGET=armv7a-linux-androideabi
           export API=28
           export CC=$TOOLCHAIN/bin/$TARGET$API-clang
-          $CC -static mbw.c -o mbw-arm64-static
+          $CC -static mbw.c -o mbw-armv7-static
       - name: upload artifact
         uses: actions/upload-artifact@v4
         with:
           name: mbw-bin
-          path: mbw-arm64-static
+          path: mbw-armv7-static
       - name: Release
         uses: softprops/action-gh-release@v2
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           files: |
-            mbw-arm64-static
+            mbw-armv7-static
