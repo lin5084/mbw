@@ -14,23 +14,16 @@ jobs:
         uses: nttld/setup-ndk@v1
         with:
           ndk-version: r25c
-      - name: compile mbw static armv7(32bit)
+      - name: compile mbw static armv7(32bit) fix TLS align
         run: |
           export NDK=$ANDROID_NDK_HOME
           export TOOLCHAIN=$NDK/toolchains/llvm/prebuilt/linux-x86_64
           export TARGET=armv7a-linux-androideabi
           export API=28
           export CC=$TOOLCHAIN/bin/$TARGET$API-clang
-          $CC -static mbw.c -o mbw-armv7-static
+          $CC -static mbw.c -o mbw-armv7-static -Wl,-zmax-page-size=4096 -Wl,--tls-align=32
       - name: upload artifact
         uses: actions/upload-artifact@v4
         with:
           name: mbw-bin
           path: mbw-armv7-static
-      - name: Release
-        uses: softprops/action-gh-release@v2
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          files: |
-            mbw-armv7-static
