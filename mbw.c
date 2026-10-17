@@ -1,3 +1,7 @@
+#if defined(__ANDROID__) && defined(__arm__)
+__attribute__((aligned(32)))
+static __thread int tls_align_fix;
+#endif
 /*
  * vim: ai ts=4 sts=4 sw=4 cinoptions=>4 expandtab
  */
